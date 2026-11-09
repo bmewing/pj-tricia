@@ -1,0 +1,68 @@
+# App Platform spec: the React app as a static site, the API as one DigitalOcean function.
+# DATABASE_URL (Neon's pooled connection string) is set on the app in DigitalOcean as a
+# secret, not here.
+name: pj-tricia
+region: nyc
+
+static_sites:
+  - name: web
+    github:
+      repo: bmewing/pj-tricia
+      branch: main
+      deploy_on_push: true
+    source_dir: frontend
+    build_command: npm ci && npm run build
+    output_dir: dist
+    catchall_document: index.html  # client-side routes like /events/<id>/play
+    envs:
+      - key: VITE_KINDE_DOMAIN
+        scope: BUILD_TIME
+        value: https://boardgamegroup.kinde.com
+      - key: VITE_KINDE_CLIENT_ID
+        scope: BUILD_TIME
+        value: 34be8267c615471a9778afd8dcde9b7b
+      - key: VITE_KINDE_AUDIENCE
+        scope: BUILD_TIME
+        value: https://api.pjtricia
+      - key: VITE_API_BASE
+        scope: BUILD_TIME
+        value: /api/core/app
+
+functions:
+  - name: api
+    github:
+      repo: bmewing/pj-tricia
+      branch: main
+      deploy_on_push: true
+    source_dir: functions
+    envs:
+      # App Platform requires every variable functions/project.yml names to be defined here.
+      - key: SERVERLESS
+        scope: RUN_AND_BUILD_TIME
+        value: "true"
+      - key: DATABASE_URL  # Neon pooled connection string (host contains -pooler)
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+      - key: KINDE_DOMAIN
+        scope: RUN_AND_BUILD_TIME
+        value: https://boardgamegroup.kinde.com
+      - key: KINDE_AUDIENCE
+        scope: RUN_AND_BUILD_TIME
+        value: https://api.pjtricia
+      - key: APP_URL
+        scope: RUN_AND_BUILD_TIME
+        value: https://pj-tricia.ondigitalocean.app
+
+ingress:
+  rules:
+    # App Platform strips /api; the next two segments pick the function (core/app).
+    - component:
+        name: api
+      match:
+        path:
+          prefix: /api
+    - component:
+        name: web
+      match:
+        path:
+          prefix: /

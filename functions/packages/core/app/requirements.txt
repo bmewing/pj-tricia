@@ -1,0 +1,69 @@
+annotated-doc==0.0.5
+    # via fastapi
+annotated-types==0.8.0
+    # via pydantic
+anyio==4.16.0
+    # via
+    #   httpx
+    #   starlette
+asyncpg==0.32.0
+    # via pj-tricia-api
+certifi==2026.10.23
+    # via
+    #   httpcore
+    #   httpx
+cffi==2.1.1 ; platform_python_implementation != 'PyPy'
+    # via cryptography
+cryptography==50.0.2
+    # via pyjwt
+fastapi==0.162.2
+    # via pj-tricia-api
+greenlet==3.5.6
+    # via sqlalchemy
+h11==0.16.0
+    # via httpcore
+httpcore==1.0.9
+    # via httpx
+httpx==0.28.1
+    # via pj-tricia-api
+idna==3.20
+    # via
+    #   anyio
+    #   httpx
+opentelemetry-api==1.45.2
+    # via fastapi
+pycparser==3.12 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
+    # via cffi
+pydantic==2.14.3
+    # via
+    #   fastapi
+    #   pydantic-settings
+pydantic-core==2.50.4
+    # via pydantic
+pydantic-settings==2.16.2
+    # via pj-tricia-api
+pyjwt==2.15.1
+    # via pj-tricia-api
+python-dotenv==1.2.4
+    # via pydantic-settings
+sqlalchemy==2.1.8
+    # via pj-tricia-api
+starlette==1.10.0
+    # via fastapi
+typing-extensions==4.16.0
+    # via
+    #   anyio
+    #   fastapi
+    #   opentelemetry-api
+    #   pydantic
+    #   pydantic-core
+    #   pydantic-settings
+    #   sqlalchemy
+    #   typing-inspection
+typing-inspection==0.4.5
+    # via
+    #   fastapi
+    #   pydantic
+    #   pydantic-settings
+tzdata==2026.6
+    # via pj-tricia-api

@@ -1,0 +1,22 @@
+# The whole API runs as one web function, core/app, wrapping the FastAPI app
+# (backend/app/serverless.py). App Platform routes /api/core/app/<path> to it.
+# Placeholders below are filled from the functions component's environment in
+# .do/app.yaml. Don't write the placeholder syntax in comments: App Platform's build
+# check reads it as a variable the app must define.
+environment:
+  SERVERLESS: "${SERVERLESS}"
+  DATABASE_URL: "${DATABASE_URL}"
+  KINDE_DOMAIN: "${KINDE_DOMAIN}"
+  KINDE_AUDIENCE: "${KINDE_AUDIENCE}"
+  APP_URL: "${APP_URL}"
+
+packages:
+  - name: core
+    functions:
+      - name: app
+        runtime: python:3.13
+        web: raw
+        limits:
+          timeout: 15000
+          # Small and quick: players poll every couple of seconds during a game.
+          memory: 256

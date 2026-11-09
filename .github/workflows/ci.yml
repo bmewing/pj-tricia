@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    services:
+      db:
+        image: postgres:18
+        env:
+          POSTGRES_USER: pjtricia
+          POSTGRES_PASSWORD: pjtricia
+          POSTGRES_DB: pjtricia
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U pjtricia -d pjtricia"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql+asyncpg://pjtricia:pjtricia@localhost:5432/pjtricia
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.2
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+      - run: uv run ruff format --check .
+      - run: uv run ruff check .
+      - run: uv run mypy
+      - run: uv run alembic upgrade head
+      - run: uv run pytest
+      - name: Function's copy of backend/app is current
+        run: |
+          bash ../functions/sync_backend.sh
+          git diff --exit-code -- ../functions/lib/app
+          test -z "$(git status --porcelain -- ../functions/lib/app)"
+      - name: Function requirements match the lockfile
+        run: |
+          uv export --no-default-groups --no-hashes --no-emit-project --no-header \
+            --format requirements-txt -o ../functions/packages/core/app/requirements.txt
+          git diff --exit-code -- ../functions/packages/core/app/requirements.txt
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: astral-sh/setup-uv@v10.3.2
+        with:
+          enable-cache: true
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - name: API types match the backend schema
+        run: |
+          npm run gen:api
+          git diff --exit-code -- src/api/schema.d.ts

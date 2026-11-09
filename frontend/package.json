@@ -1,0 +1,57 @@
+{
+  "name": "pj-tricia-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "oxlint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc -b",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "gen:api": "uv run --directory ../backend python -m app.export_openapi ../frontend/node_modules/.tmp/openapi.json && openapi-typescript node_modules/.tmp/openapi.json -o src/api/schema.d.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/fredoka": "^5.3.0",
+    "@fontsource-variable/nunito": "^5.3.0",
+    "@kinde-oss/kinde-auth-react": "^5.13.2",
+    "@mantine/core": "^9.7.3",
+    "@mantine/hooks": "^9.7.3",
+    "@tanstack/react-query": "^5.104.5",
+    "openapi-fetch": "^0.17.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router": "^8.5.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "jsdom": "^30.1.3",
+    "openapi-typescript": "^7.13.0",
+    "oxlint": "^1.88.0",
+    "postcss": "^8.5.31",
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1",
+    "prettier": "^3.9.10",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  },
+  "overrides": {
+    "openapi-typescript": {
+      "typescript": "$typescript"
+    }
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}
