@@ -51,7 +51,7 @@ functions:
         value: https://api.pjtricia
       - key: APP_URL
         scope: RUN_AND_BUILD_TIME
-        value: https://pj-tricia.ondigitalocean.app
+        value: https://pj-tricia-d5gcc.ondigitalocean.app
 
 ingress:
   rules:
