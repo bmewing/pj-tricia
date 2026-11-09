@@ -17,10 +17,10 @@ static_sites:
     envs:
       - key: VITE_KINDE_DOMAIN
         scope: BUILD_TIME
-        value: https://boardgamegroup.kinde.com
+        value: https://pjtricia.kinde.com
       - key: VITE_KINDE_CLIENT_ID
         scope: BUILD_TIME
-        value: 34be8267c615471a9778afd8dcde9b7b
+        value: 869c485fb56543fb84482cafee89bb1d
       - key: VITE_KINDE_AUDIENCE
         scope: BUILD_TIME
         value: https://api.pjtricia
@@ -45,7 +45,7 @@ functions:
         type: SECRET
       - key: KINDE_DOMAIN
         scope: RUN_AND_BUILD_TIME
-        value: https://boardgamegroup.kinde.com
+        value: https://pjtricia.kinde.com
       - key: KINDE_AUDIENCE
         scope: RUN_AND_BUILD_TIME
         value: https://api.pjtricia

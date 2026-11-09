@@ -87,7 +87,7 @@ function, `core/app`, at `/api/core/app/...` (`backend/app/serverless.py` adapts
 - The function's `DATABASE_URL` secret is the **pooled** string; `SERVERLESS=true` turns off
   connection pooling and prepared-statement caching to suit it.
 - Kinde: the "PJ Tricia" application and "PJ Tricia API" (audience `https://api.pjtricia`) live
-  in the boardgamegroup Kinde business. Its callback and logout URLs are localhost:5173 and
-  https://pj-tricia-d5gcc.ondigitalocean.app; add any new domain there too.
+  in their own Kinde business, `pjtricia.kinde.com`. The app's callback and logout URLs are
+  localhost:5173 and https://pj-tricia-d5gcc.ondigitalocean.app; add any new domain there too.
 - The function has 512 MB: CPU scales with memory, and at 256 MB a cold start outran the
   timeout.
