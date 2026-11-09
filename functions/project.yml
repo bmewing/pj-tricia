@@ -17,6 +17,7 @@ packages:
         runtime: python:3.13
         web: raw
         limits:
-          timeout: 15000
-          # Small and quick: players poll every couple of seconds during a game.
-          memory: 256
+          # A cold start imports FastAPI, SQLAlchemy and cryptography before the first
+          # request; CPU scales with memory, and at 256 MB that took longer than 15s.
+          timeout: 30000
+          memory: 512
