@@ -153,13 +153,13 @@ def step_label(step: Step) -> str:
     if step.type == "results":
         return "Final results"
     if step.type == "wager":
-        return "Final wager"
+        return "Do or Die Dare wagers"
     assert step.question is not None
     kind = step.question.kind
     if kind == QuestionKind.DOUBLE_DARE:
-        return f"Round {step.round} double dare"
+        return f"Round {step.round} Double Down Dare"
     if kind == QuestionKind.FINAL:
-        return "Final question"
+        return "Do or Die Dare"
     return f"Round {step.round}, question {step.number}"
 
 

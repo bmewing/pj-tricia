@@ -1,54 +1,68 @@
 import { Button, Card, createTheme, type MantineColorsTuple } from '@mantine/core'
 
-// Cozy night in: midnight indigo, lamp-light gold, and a coral for the misses.
-const midnight: MantineColorsTuple = [
-  '#eeedf8',
-  '#d6d4ee',
-  '#b0acdc',
-  '#8882c9',
-  '#6760b8',
-  '#534cab',
-  '#463f99',
-  '#39337f',
-  '#2a2660',
-  '#1c1a3a',
+// The PJ Tricia deck: a black stage, the logo's marker red, the gold of the round titles, and
+// the lightbulb's cream. Marker Felt is on every Apple device; elsewhere Permanent Marker stands in.
+export const MARKER_FONT = "'Marker Felt', 'Permanent Marker', 'Comic Sans MS', cursive"
+
+const marker: MantineColorsTuple = [
+  '#fdeeec',
+  '#f7d3ce',
+  '#eeaca3',
+  '#e48477',
+  '#da6354',
+  '#cf5444',
+  '#c0483a',
+  '#a33c30',
+  '#863127',
+  '#69261e',
 ]
 
 const gold: MantineColorsTuple = [
   '#fff7e6',
   '#ffeac2',
-  '#fdd88d',
-  '#fac65a',
-  '#f5b83d',
-  '#e9a51f',
-  '#c98a10',
-  '#9f6c0b',
-  '#7a5208',
-  '#553905',
+  '#fbd88f',
+  '#f5c25c',
+  '#f0ae3c',
+  '#e39d24',
+  '#c78516',
+  '#9f6a10',
+  '#7a510b',
+  '#553805',
 ]
 
+const cream: MantineColorsTuple = [
+  '#fefdf2',
+  '#fcfadf',
+  '#f8f4bc',
+  '#f1ea98',
+  '#e9df76',
+  '#ddd05a',
+  '#c4b744',
+  '#9d9235',
+  '#766e27',
+  '#4f4919',
+]
+
+// Mantine's dark scheme draws the page from dark.7 and cards from dark.6.
 const dark: MantineColorsTuple = [
-  '#ecebf7',
-  '#c4c2dd',
-  '#9b98bf',
-  '#77749e',
-  '#57547f',
-  '#423f68',
-  '#332f57',
-  '#26234a',
-  '#1c1a3a',
-  '#141229',
+  '#ececec',
+  '#c6c6c6',
+  '#9a9a9a',
+  '#707070',
+  '#3a3a3a',
+  '#2a2a2a',
+  '#151515',
+  '#000000',
+  '#000000',
+  '#000000',
 ]
 
 export const theme = createTheme({
-  primaryColor: 'midnight',
-  primaryShade: { light: 6, dark: 3 },
-  colors: { midnight, gold, dark },
-  fontFamily: "'Nunito Variable', system-ui, -apple-system, 'Segoe UI', sans-serif",
-  headings: {
-    fontFamily: "'Fredoka Variable', 'Nunito Variable', system-ui, sans-serif",
-    fontWeight: '600',
-  },
+  primaryColor: 'marker',
+  primaryShade: 6,
+  colors: { marker, gold, cream, dark },
+  fontFamily: "'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif",
+  headings: { fontFamily: MARKER_FONT, fontWeight: '700' },
   defaultRadius: 'md',
   components: {
     Card: Card.extend({ defaultProps: { radius: 'lg', withBorder: true } }),

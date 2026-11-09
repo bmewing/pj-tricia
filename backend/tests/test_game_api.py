@@ -248,7 +248,7 @@ async def test_cannot_start_incomplete_game(client: AsyncClient, person: MakePer
     await client.delete(f"/api/questions/{dare['id']}", headers=host.headers)
     r = await client.post(f"/api/events/{eid}/live/start", headers=host.headers)
     assert r.status_code == 409
-    assert "double dare" in r.json()["detail"]
+    assert "Double Down Dare" in r.json()["detail"]
 
 
 async def test_changing_host_asks_about_questions(client: AsyncClient, person: MakePerson) -> None:

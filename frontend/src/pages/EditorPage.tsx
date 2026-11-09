@@ -201,13 +201,13 @@ function RoundPanel({
     ;[ids[index], ids[target]] = [ids[target], ids[index]]
     reorder.mutate(ids)
   }
-  const specialName = special === 'final' ? 'Final wager question' : 'Double dare'
+  const specialName = special === 'final' ? 'Do or Die Dare' : 'Double Down Dare'
   return (
     <Stack mt="md">
       <Text c="dimmed" size="sm">
         {round === 4
-          ? 'Free-form questions worth 20 each. You mark each answer right or wrong. Then teams wager up to their total on the final question.'
-          : `Multiple choice, ${POINTS[round]} points each. Then the double dare: a free-form question teams can pass on. Right doubles the round's points; wrong loses them.`}
+          ? 'Free-form questions worth 20 each. You mark each answer right or wrong. Then the Do or Die Dare: teams wager up to their total before they see it.'
+          : `Multiple choice, ${POINTS[round]} points each. Then the Double Down Dare: a free-form question teams can pass on. Right doubles the round's points; wrong loses them.`}
       </Text>
       {regulars.map((q, i) => (
         <QuestionCard
@@ -235,7 +235,7 @@ function RoundPanel({
         />
       ) : (
         <Button variant="outline" w="fit-content" color="gold" onClick={() => add.mutate(special)}>
-          Add the {specialName.toLowerCase()}
+          Add the {specialName}
         </Button>
       )}
       <ErrorNote error={add.error ?? reorder.error} />
@@ -276,8 +276,8 @@ function ImportModal({
         <Text size="sm">
           Paste CSV rows (or pick a .csv file) with columns{' '}
           <Code>round, kind, question, A, B, C, D, answer</Code>. Kind is <Code>mc</Code>,{' '}
-          <Code>dare</Code>, <Code>free</Code> or <Code>final</Code>. For multiple choice the answer
-          is the letter.
+          <Code>dare</Code> (the Double Down Dare), <Code>free</Code> or <Code>final</Code> (the Do
+          or Die Dare). For multiple choice the answer is the letter.
         </Text>
         <Code block>{SAMPLE}</Code>
         <input

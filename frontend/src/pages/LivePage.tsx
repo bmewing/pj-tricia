@@ -8,6 +8,7 @@ import {
   NumberInput,
   Paper,
   Progress,
+  SimpleGrid,
   Stack,
   Table,
   Text,
@@ -21,16 +22,17 @@ import { api, call, type HostAnswer, type LiveState, type ScoreRow } from '../ap
 import { keys, useApi, useEvent, useLive } from '../api/queries'
 import { ErrorNote, Loading } from '../components/common'
 import { LETTERS } from '../components/format'
+import { HouseRules } from '../components/HouseRules'
 
 type Question = NonNullable<LiveState['question']>
 
 function stepTitle(state: LiveState): string {
   const q = state.question
-  if (state.step === 'wager') return 'Final wager'
+  if (state.step === 'wager') return 'Do or Die Dare'
   if (state.step === 'results' || state.step === 'over') return 'Final results'
   if (!q) return ''
-  if (q.kind === 'double_dare') return `Round ${q.round} · Double dare`
-  if (q.kind === 'final') return 'Final question'
+  if (q.kind === 'double_dare') return `Round ${q.round} · Double Down Dare`
+  if (q.kind === 'final') return 'Do or Die Dare'
   return `Round ${q.round} · Question ${q.number} · ${q.points} pts`
 }
 
@@ -121,20 +123,60 @@ function rank(rows: ScoreRow[], index: number): number {
   return place + 1
 }
 
-function QuestionView({ question, state }: { question: Question; state: LiveState }) {
+function DareBanner({ kind }: { kind: Question['kind'] | 'wager' }) {
+  if (kind === 'double_dare') return <div className="dare-banner">Double Down Dare!</div>
+  if (kind === 'final' || kind === 'wager')
+    return <div className="dare-banner do-or-die">Do or Die Dare!</div>
+  return null
+}
+
+function Billboard({ question, state }: { question: Question; state: LiveState }) {
   const reveal = state.reveal
+  const dare = question.kind === 'double_dare' || question.kind === 'final'
+  // Players tap their choices below; everyone else reads them off the board.
+  const listChoices = question.kind === 'mc' && state.role !== 'player'
   return (
-    <Stack gap="sm">
-      <Text className="question-text">{question.text}</Text>
-      {question.kind !== 'mc' && reveal?.answer_text && (
-        <Paper p="sm" bg="green.9" c="white" radius="md">
-          <Text size="sm" fw={700}>
-            Answer
-          </Text>
-          <Text fz="lg">{reveal.answer_text}</Text>
-        </Paper>
-      )}
-    </Stack>
+    <div>
+      <DareBanner kind={question.kind} />
+      <div className={dare ? 'billboard dare' : 'billboard'}>
+        <div className="billboard-screen">
+          <Stack gap="md">
+            <Text className="question-text">{question.text}</Text>
+            {listChoices && <BoardChoices question={question} state={state} />}
+            {question.kind !== 'mc' && reveal?.answer_text && (
+              <Paper p="sm" bg="green.8" c="white" radius="md">
+                <Text size="sm" fw={700}>
+                  Answer
+                </Text>
+                <Text fz="lg">{reveal.answer_text}</Text>
+              </Paper>
+            )}
+          </Stack>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function BoardChoices({ question, state }: { question: Question; state: LiveState }) {
+  const correct = state.reveal?.correct_choice
+  return (
+    <SimpleGrid cols={{ base: 1, xs: 2 }} spacing={6} verticalSpacing={6}>
+      {(question.choices ?? []).map((choice, i) => (
+        <Text
+          key={i}
+          fz="lg"
+          px={8}
+          py={2}
+          bg={correct === i ? 'green.7' : undefined}
+          c={correct === i ? 'white' : undefined}
+          fw={correct === i ? 700 : undefined}
+          style={{ borderRadius: 6 }}
+        >
+          {LETTERS[i]}) {choice}
+        </Text>
+      ))}
+    </SimpleGrid>
   )
 }
 
@@ -157,8 +199,7 @@ function Choices({
       {(question.choices ?? []).map((choice, i) => {
         const isCorrect = correct === i
         const isPicked = picked === i
-        const color =
-          isCorrect && !open ? 'green' : isCorrect ? 'green' : isPicked ? 'gold' : 'midnight'
+        const color = isCorrect ? 'green' : isPicked ? 'gold' : 'gray'
         return (
           <Button
             key={i}
@@ -212,10 +253,12 @@ function PlayerInput({ state, eventId }: { state: LiveState; eventId: string }) 
     return (
       <Card>
         <Stack>
+          <DareBanner kind="wager" />
           <Title order={3}>Place your wager</Title>
           <Text>
             You have <b>{state.my_score?.total ?? 0}</b> points. Wager up to{' '}
-            <b>{state.max_wager ?? 0}</b>. Get the final right to win that much, wrong to lose it.
+            <b>{state.max_wager ?? 0}</b>. Get the Do or Die Dare right to win that much, wrong to
+            lose it.
           </Text>
           <NumberInput
             size="lg"
@@ -598,6 +641,7 @@ function Lobby({ state, eventId }: { state: LiveState; eventId: string }) {
           )}
         </Stack>
       </Card>
+      <HouseRules />
     </Stack>
   )
 }
@@ -639,7 +683,9 @@ export function LivePage() {
           ← {event?.title ?? 'Event'}
         </Text>
         <Group justify="space-between" align="center">
-          <Title order={2}>{state.step === 'lobby' ? 'Game room' : stepTitle(state)}</Title>
+          <Title order={2} className="gold-title">
+            {state.step === 'lobby' ? 'Game room' : stepTitle(state)}
+          </Title>
           <Group gap="xs">
             <Badge variant="light">{state.role}</Badge>
             {state.status === 'live' && state.phase && (
@@ -659,25 +705,18 @@ export function LivePage() {
 
       {playing && isHost && <HostControls state={state} eventId={eventId} />}
 
-      {playing && question && (
-        <Card>
-          <QuestionView question={question} state={state} />
-          {question.kind === 'mc' && (isHost || state.role === 'spectator') && (
-            <div style={{ marginTop: 12 }}>
-              <Choices question={question} state={state} />
-            </div>
-          )}
-        </Card>
-      )}
+      {playing && question && <Billboard question={question} state={state} />}
       {playing && !question && state.step === 'wager' && !isHost && state.role === 'spectator' && (
         <Card>
-          <Text>Teams are placing their wagers on the final question…</Text>
+          <DareBanner kind="wager" />
+          <Text mt="xs">Teams are placing their wagers on the Do or Die Dare…</Text>
         </Card>
       )}
       {playing && isHost && state.step === 'wager' && (
         <Card>
-          <Text>
-            Teams are wagering. The final question stays hidden until you move on. Their total so
+          <DareBanner kind="wager" />
+          <Text mt="xs">
+            Teams are wagering. The Do or Die Dare stays hidden until you move on. Their total so
             far is the most they can stake.
           </Text>
         </Card>

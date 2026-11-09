@@ -125,8 +125,8 @@ def _check_kind(round_: int, kind: QuestionKind) -> None:
     if kind not in kinds_for(round_):
         raise HTTPException(
             status.HTTP_422_UNPROCESSABLE_CONTENT,
-            "Rounds 1-3 hold multiple choice and a double dare; round 4 holds free-form "
-            "questions and the final.",
+            "Rounds 1-3 hold multiple choice and a Double Down Dare; round 4 holds free-form "
+            "questions and the Do or Die Dare.",
         )
 
 
@@ -250,9 +250,12 @@ KIND_NAMES = {
     "dare": QuestionKind.DOUBLE_DARE,
     "double dare": QuestionKind.DOUBLE_DARE,
     "double_dare": QuestionKind.DOUBLE_DARE,
+    "double down dare": QuestionKind.DOUBLE_DARE,
     "free": QuestionKind.FREE,
     "final": QuestionKind.FINAL,
     "wager": QuestionKind.FINAL,
+    "do or die": QuestionKind.FINAL,
+    "do or die dare": QuestionKind.FINAL,
 }
 LETTERS = "ABCD"
 

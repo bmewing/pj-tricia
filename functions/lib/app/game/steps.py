@@ -84,7 +84,7 @@ def problems(questions: Sequence[Question]) -> list[str]:
             what = "multiple-choice" if regular == QuestionKind.MC else "free-form"
             found.append(f"Round {round_} needs at least one {what} question.")
         if not any(q.kind == special for q in in_round):
-            what = "double dare" if special == QuestionKind.DOUBLE_DARE else "final wager question"
+            what = "Double Down Dare" if special == QuestionKind.DOUBLE_DARE else "Do or Die Dare"
             found.append(f"Round {round_} needs its {what}.")
     for question in questions:
         found.extend(question_problems(question))

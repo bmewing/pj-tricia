@@ -11,15 +11,15 @@ signed-in account is one team (a couple on one phone is fine); anyone else can w
 
 | Round | Questions | Points each | Then |
 | --- | --- | --- | --- |
-| 1 | multiple choice | 5 | double dare |
-| 2 | multiple choice | 10 | double dare |
-| 3 | multiple choice | 15 | double dare |
-| 4 | free-form | 20 | wager + final question |
+| 1 | multiple choice | 5 | Double Down Dare |
+| 2 | multiple choice | 10 | Double Down Dare |
+| 3 | multiple choice | 15 | Double Down Dare |
+| 4 | free-form | 20 | Do or Die Dare (wager) |
 
-- **Double dare:** a free-form question teams can pass on. Right doubles the round's points;
+- **Double Down Dare:** a free-form question teams can pass on. Right doubles the round's points;
   wrong zeroes them; passing keeps them.
-- **Final:** teams wager 0 up to their total before seeing the question, then win or lose it.
-  A blank answer counts as wrong.
+- **Do or Die Dare:** teams wager 0 up to their total before seeing the question, then win or
+  lose it. A blank answer counts as wrong.
 - Multiple choice grades itself. Free-form answers that match exactly (ignoring case,
   punctuation and a leading "the/a/an") are marked right automatically; the host marks the
   rest, and can change any grade until the game ends.
@@ -32,6 +32,12 @@ B, C, D, answer`). Changing the host after questions exist asks whether to keep 
 
 Live updates are polling: clients call `GET /api/events/{id}/live?since=<version>` every 1.5–4
 seconds and get a bare 204 when nothing changed.
+
+## Look
+
+The branding (logo, colors, the billboard question cards, the dare names and the house rules)
+comes from the PJ Tricia Keynote deck. The logo and lightbulb icon in `frontend/public` were cut
+from it. Headings use Marker Felt on Apple devices and Permanent Marker elsewhere.
 
 ## Running locally
 

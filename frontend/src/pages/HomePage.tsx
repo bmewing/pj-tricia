@@ -18,26 +18,33 @@ import { Link, useNavigate } from 'react-router'
 import { api, call } from '../api/client'
 import { keys, useApi, useGroups } from '../api/queries'
 import { ErrorNote, Loading } from '../components/common'
+import { HouseRules } from '../components/HouseRules'
 import { formatWhen } from '../components/format'
 
 function Landing() {
   const { login, register } = useKindeAuth()
   return (
-    <Stack gap="xl" mt="xl" maw={640}>
-      <Title order={1} fz={{ base: 36, sm: 52 }} lh={1.1}>
-        Trivia night,{' '}
-        <Text span inherit c="gold.4">
-          from the couch.
-        </Text>
+    <Stack gap="xl" mt="lg">
+      <img
+        src="/logo.png"
+        alt="PJ Tricia"
+        style={{ width: 'min(100%, 480px)', height: 'auto', display: 'block' }}
+      />
+      <Title order={1} fz={{ base: 32, sm: 46 }} lh={1.15} className="gold-title">
+        Trivia night, from the couch.
       </Title>
-      <Text size="lg">
+      <Text size="lg" maw={640}>
         Make a group, schedule a game, and let someone host. Everyone plays from home on their
         phone; the scores keep themselves.
       </Text>
-      <List spacing="xs">
-        <List.Item>Three multiple-choice rounds worth 5, 10 and 15 a question</List.Item>
-        <List.Item>A double dare after each one: double the round, or lose it</List.Item>
-        <List.Item>A free-form fourth round, then wager it all on the final</List.Item>
+      <List spacing="xs" maw={640}>
+        <List.Item>Round 1, 2 and 3: multiple choice worth 5, 10 and 15 a question</List.Item>
+        <List.Item>
+          A <b>Double Down Dare</b> after each one: double the round, or lose it
+        </List.Item>
+        <List.Item>
+          Round 4 is free-form, then the <b>Do or Die Dare</b>: wager it all
+        </List.Item>
       </List>
       <Group>
         <Button size="md" onClick={() => void register()}>
@@ -47,6 +54,7 @@ function Landing() {
           Sign in
         </Button>
       </Group>
+      <HouseRules />
     </Stack>
   )
 }

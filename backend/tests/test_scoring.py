@@ -226,8 +226,8 @@ def test_steps_order() -> None:
 def test_problems() -> None:
     assert problems(everything(full_game())) == []
     found = problems([mc(1)])
-    assert "Round 1 needs its double dare." in found
-    assert "Round 4 needs its final wager question." in found
+    assert "Round 1 needs its Double Down Dare." in found
+    assert "Round 4 needs its Do or Die Dare." in found
     broken = mc(1)
     broken.correct_choice = None
     assert any("correct choice" in p for p in problems([broken]))

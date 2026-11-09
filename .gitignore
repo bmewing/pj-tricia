@@ -16,3 +16,6 @@ __pycache__/
 .vscode/*
 !.vscode/extensions.json
 .DS_Store
+
+# Source artwork (large Keynote file); kept out of the repo
+REFERENCE_ART/

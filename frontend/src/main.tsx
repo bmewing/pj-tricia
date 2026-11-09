@@ -1,6 +1,5 @@
 import '@mantine/core/styles.css'
-import '@fontsource-variable/fredoka'
-import '@fontsource-variable/nunito'
+import '@fontsource/permanent-marker'
 import './styles/global.css'
 
 import { MantineProvider } from '@mantine/core'
@@ -19,7 +18,7 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <MantineProvider theme={theme} defaultColorScheme="dark">
+    <MantineProvider theme={theme} forceColorScheme="dark">
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />
